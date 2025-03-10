@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Inventory_Management.Migrations
+namespace DigitalBookstoreManagement.Migrations
 {
     /// <inheritdoc />
     public partial class initial : Migration

@@ -1,6 +1,6 @@
-@Inventory_Management_HostAddress = http://localhost:5195
+@DigitalBookstoreManagement_HostAddress = http://localhost:5195
 
-GET {{Inventory_Management_HostAddress}}/weatherforecast/
+GET {{DigitalBookstoreManagement_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###

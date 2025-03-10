@@ -1,8 +1,7 @@
-using DigitalBookstoreAPI.Repository;
-using DigitalBookstoreAPI.Services;
-using Inventory_Management.Data;
-using Inventory_Management.Repository;
-using Inventory_Management.Service;
+using DigitalBookstoreManagement.Repository;
+using DigitalBookstoreManagement.Services;
+using DigitalBookstoreManagement.Data;
+using DigitalBookstoreManagement.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

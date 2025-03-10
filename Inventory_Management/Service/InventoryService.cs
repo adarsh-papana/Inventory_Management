@@ -1,10 +1,10 @@
-﻿using Inventory_Management.Models;
-using Inventory_Management.Repository;
-using Inventory_Management.Service;
+﻿using DigitalBookstoreManagement.Models;
+using DigitalBookstoreManagement.Repository;
+using DigitalBookstoreManagement.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DigitalBookstoreAPI.Services
+namespace DigitalBookstoreManagement.Services
 {
     public class InventoryService : I_InventoryService
     {

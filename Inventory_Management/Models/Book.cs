@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Inventory_Management.Models
+namespace DigitalBookstoreManagement.Models
 {
     public class Book
     {

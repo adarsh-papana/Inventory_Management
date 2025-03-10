@@ -1,6 +1,6 @@
-﻿using Inventory_Management.Models;
+﻿using DigitalBookstoreManagement.Models;
 
-namespace Inventory_Management.Service
+namespace DigitalBookstoreManagement.Service
 {
     public interface I_InventoryService
     {

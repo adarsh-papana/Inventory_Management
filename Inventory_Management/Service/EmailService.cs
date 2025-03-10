@@ -3,7 +3,7 @@ using MimeKit;
 using System;
 using System.Threading.Tasks;
 
-namespace Inventory_Management.Service
+namespace DigitalBookstoreManagement.Service
 {
     public class EmailService
     {

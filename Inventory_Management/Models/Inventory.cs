@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Inventory_Management.Models
+namespace DigitalBookstoreManagement.Models
 {
     public class Inventory
     {
@@ -24,7 +24,7 @@ namespace Inventory_Management.Models
         [Range(1, int.MaxValue, ErrorMessage = "NotifyLimit must be at least 1")]
         public int NotifyLimit { get; set; }
 
-        [JsonIgnore]
-        public virtual Book Book { get; set; }
+     //   [JsonIgnore]
+      //  public virtual Book Book { get; set; }
     }
 }

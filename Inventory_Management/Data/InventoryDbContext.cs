@@ -1,7 +1,7 @@
-﻿using Inventory_Management.Models;
+﻿using DigitalBookstoreManagement.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Inventory_Management.Data
+namespace DigitalBookstoreManagement.Data
 {
     public class InventoryDbContext : DbContext
     {
@@ -20,11 +20,11 @@ namespace Inventory_Management.Data
                 .Property(b => b.Price)
                 .HasPrecision(18, 2);
 
-            modelBuilder.Entity<Inventory>()
+          /*  modelBuilder.Entity<Inventory>()
                 .HasOne(i => i.Book)
                 .WithOne(b => b.Inventory)
                 .HasForeignKey<Inventory>(i => i.BookID)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade);*/
         }
     }
 }

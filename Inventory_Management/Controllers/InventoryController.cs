@@ -1,8 +1,8 @@
-﻿using Inventory_Management.Models;
-using Inventory_Management.Service;
+﻿using DigitalBookstoreManagement.Models;
+using DigitalBookstoreManagement.Service;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Inventory_Management.Controllers
+namespace DigitalBookstoreManagement.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -17,6 +17,7 @@ namespace Inventory_Management.Controllers
 
         // ✅ 1. Get all inventory items
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<Inventory>>> GetAllInventories()
         {
             var inventories = await _inventoryService.GetAllInventoriesAsync();
@@ -52,7 +53,7 @@ namespace Inventory_Management.Controllers
             if (inventory == null)
                 return BadRequest("Invalid inventory data.");
 
-            inventory.Book = null;
+          //  inventory.Book = null;
 
             await _inventoryService.AddInventoryAsync(inventory);
             return CreatedAtAction(nameof(GetInventoryById), new { id = inventory.InventoryID }, inventory);
@@ -65,7 +66,7 @@ namespace Inventory_Management.Controllers
             if (inventory == null || id != inventory.InventoryID)
                 return BadRequest("Inventory ID mismatch or invalid data.");
 
-            inventory.Book = null;
+          //  inventory.Book = null;
 
             await _inventoryService.UpdateInventoryAsync(inventory);
             return NoContent();

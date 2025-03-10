@@ -1,10 +1,10 @@
-﻿using Inventory_Management.Data;
-using Inventory_Management.Models;
-using Inventory_Management.Repository;
-using Inventory_Management.Service;
+﻿using DigitalBookstoreManagement.Data;
+using DigitalBookstoreManagement.Models;
+using DigitalBookstoreManagement.Repository;
+using DigitalBookstoreManagement.Service;
 using Microsoft.EntityFrameworkCore;
 
-namespace DigitalBookstoreAPI.Repository
+namespace DigitalBookstoreManagement.Repository
 {
     public class InventoryRepository : I_InventoryRepository
     {
@@ -19,17 +19,17 @@ namespace DigitalBookstoreAPI.Repository
 
         public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
         {
-            return await _context.Inventories.Include(i => i.Book).ToListAsync();
+            return await _context.Inventories.ToListAsync();
         }
 
         public async Task<Inventory> GetInventoryByIdAsync(int id)
         {
-            return await _context.Inventories.Include(i => i.Book).FirstOrDefaultAsync(i => i.InventoryID == id);
+            return await _context.Inventories.FirstOrDefaultAsync(i => i.InventoryID == id);
         }
 
         public async Task<Inventory> GetInventoryByBookIdAsync(int bookId)
         {
-            return await _context.Inventories.Include(i => i.Book).FirstOrDefaultAsync(i => i.BookID == bookId);
+            return await _context.Inventories.FirstOrDefaultAsync(i => i.BookID == bookId);
         }
 
         public async Task<Inventory> AddInventoryAsync(Inventory inventory)
