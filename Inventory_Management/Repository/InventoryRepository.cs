@@ -9,12 +9,15 @@ namespace DigitalBookstoreManagement.Repository
     public class InventoryRepository : I_InventoryRepository
     {
         private readonly InventoryDbContext _context;
-        private readonly EmailService _emailService;
+        private readonly I_NotificationRepository _notificationRepository;
+        //private readonly EmailService _emailService;
 
-        public InventoryRepository(InventoryDbContext context, EmailService emailService)
+
+        public InventoryRepository(InventoryDbContext context, I_NotificationRepository notificationRepository)
         {
             _context = context;
-            _emailService = emailService;
+            _notificationRepository = notificationRepository;
+            //_emailService = emailService;
         }
 
         public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
@@ -96,11 +99,11 @@ namespace DigitalBookstoreManagement.Repository
                     // 🔔 Send Email Notification if stock is below NotifyLimit
                     if (inventory.Quantity < inventory.NotifyLimit)
                     {
+                        string message = $"The book containing in Inventory {inventory.InventoryID} with BookID {book.BookID} of '{book.Title}' is less than the notify limit. Kindly re-stock the book.";
+                        await _notificationRepository.AddNotification(message);
+                        Console.WriteLine($"ALERT: {message}");
                         // TODO: Implement Email Notification
-                        Console.WriteLine($"ALERT: Inventory {inventory.InventoryID}, BookID {book.BookID}, Book {book.Title} is running low on stock! Current Quantity {inventory.Quantity}");
-
-                        // Call Email Service
-                        await _emailService.SendLowStockNotification(inventory.InventoryID, bookId, book.Title, inventory.Quantity);
+                        //Console.WriteLine($"ALERT: Inventory {inventory.InventoryID}, BookID {book.BookID}, Book {book.Title} is running low on stock! Current Quantity {inventory.Quantity}");
                     }
                 }
             }

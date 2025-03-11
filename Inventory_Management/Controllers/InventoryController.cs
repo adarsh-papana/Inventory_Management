@@ -69,7 +69,7 @@ namespace DigitalBookstoreManagement.Controllers
           //  inventory.Book = null;
 
             await _inventoryService.UpdateInventoryAsync(inventory);
-            return NoContent();
+            return Ok("Inventory Updated Successfully.");
         }
 
         // ✅ 6. Delete inventory

@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<InventoryDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<I_InventoryRepository, InventoryRepository>();
 builder.Services.AddScoped<I_InventoryService, InventoryService>();
-builder.Services.AddSingleton<EmailService>();
+builder.Services.AddScoped<I_NotificationRepository, NotificationRepository>();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
