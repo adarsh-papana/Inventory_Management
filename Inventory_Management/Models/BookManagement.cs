@@ -1,23 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace DigitalBookstoreManagement.Models
 {
-    public class Book
+    public class BookManagement
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int BookID { get; set; }
 
         [Required(ErrorMessage = "Title is required")]
         [StringLength(200, ErrorMessage = "Title cannot exceed 200 characters.")]
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "AuthorID is required")]
+        [Required]
         public int AuthorID { get; set; }
 
-        [Required(ErrorMessage = "CategoryID is required")]
-        public int CategoryID { get; set; }
+        [Required]
+        public string CategoryID { get; set; }
 
         [Required(ErrorMessage = "Price is required")]
         [Range(0.01, 99999.99, ErrorMessage = "Price must be between 0.01 and 99,999.99.")]
@@ -27,7 +26,14 @@ namespace DigitalBookstoreManagement.Models
         [Required]
         public string StockQuantity { get; set; }
 
-        [JsonIgnore] // Avoid circular reference issue
-        public virtual Inventory Inventory { get; set; }
+        [Required]
+        [Url]
+        public string ImageURL { get; set; }
+
+        [ForeignKey("AuthorID")]
+        public Author Author { get; set; }
+
+        [ForeignKey("CategoryID")]
+        public Category Category { get; set; }
     }
 }

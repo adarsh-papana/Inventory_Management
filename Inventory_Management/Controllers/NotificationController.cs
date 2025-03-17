@@ -1,5 +1,4 @@
-﻿//using Microsoft.AspNetCore.Components;
-using DigitalBookstoreManagement.Repository;
+﻿using DigitalBookstoreManagement.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DigitalBookstoreManagement.Controllers
@@ -18,7 +17,7 @@ namespace DigitalBookstoreManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllNotifications()
         {
-            var notifications = await _notificationRepository.GetAllNotifications();
+            var notifications = await _notificationRepository.GetAllNotificationsAsync();
             return Ok(notifications);
         }
     }

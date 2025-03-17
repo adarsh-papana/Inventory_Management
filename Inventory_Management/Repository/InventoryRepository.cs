@@ -1,8 +1,10 @@
-﻿using DigitalBookstoreManagement.Data;
+﻿using System.Collections.Generic;
+using System.Net;
+using DigitalBookstoreManagement.Data;
 using DigitalBookstoreManagement.Models;
-using DigitalBookstoreManagement.Repository;
-using DigitalBookstoreManagement.Service;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace DigitalBookstoreManagement.Repository
 {
@@ -10,35 +12,34 @@ namespace DigitalBookstoreManagement.Repository
     {
         private readonly InventoryDbContext _context;
         private readonly I_NotificationRepository _notificationRepository;
-        //private readonly EmailService _emailService;
 
 
         public InventoryRepository(InventoryDbContext context, I_NotificationRepository notificationRepository)
         {
             _context = context;
             _notificationRepository = notificationRepository;
-            //_emailService = emailService;
         }
 
         public async Task<IEnumerable<Inventory>> GetAllInventoriesAsync()
         {
-            return await _context.Inventories.ToListAsync();
+            return await _context.Inventories.Include(b => b.BookManagement).ThenInclude(i => i.Author).Include(b => b.BookManagement).ThenInclude(i => i.Category).ToListAsync();
         }
 
         public async Task<Inventory> GetInventoryByIdAsync(int id)
         {
-            return await _context.Inventories.FirstOrDefaultAsync(i => i.InventoryID == id);
+            return await _context.Inventories.Include(b => b.BookManagement).ThenInclude(i => i.Author).Include(b => b.BookManagement).ThenInclude(i => i.Category).FirstOrDefaultAsync(i => i.InventoryID == id);
         }
 
         public async Task<Inventory> GetInventoryByBookIdAsync(int bookId)
         {
-            return await _context.Inventories.FirstOrDefaultAsync(i => i.BookID == bookId);
+            return await _context.Inventories.Include(b => b.BookManagement).ThenInclude(i => i.Author).Include(b => b.BookManagement).ThenInclude(i => i.Category).FirstOrDefaultAsync(i => i.BookID == bookId);
         }
 
         public async Task<Inventory> AddInventoryAsync(Inventory inventory)
         {
             _context.Inventories.Add(inventory);
             await _context.SaveChangesAsync();
+            await CheckStockAndNotifyAdminAsync(inventory.BookID);
             return inventory;
         }
 
@@ -57,6 +58,9 @@ namespace DigitalBookstoreManagement.Repository
                 _context.Inventories.Remove(inventory);
                 await _context.SaveChangesAsync();
             }
+
+            var maxId = await _context.Inventories.MaxAsync(i => (int?)i.InventoryID) ?? 0;
+            await _context.Database.ExecuteSqlRawAsync($"DBCC CHECKIDENT('Inventories', RESEED, {maxId})");
         }
 
         public async Task<bool> IsStockAvailableAsync(int bookId, int quantity)
@@ -110,6 +114,22 @@ namespace DigitalBookstoreManagement.Repository
                     }
                 }
             }
+        }
+
+        public async Task<bool> AddStockAsync(int bookId, int quantity)
+        {
+            var inventory = await _context.Inventories.FirstOrDefaultAsync(i => i.BookID == bookId);
+
+            if (inventory == null)
+            {
+                return false;
+            }
+            inventory.Quantity += quantity;
+            await _context.SaveChangesAsync();
+
+            await CheckStockAndNotifyAdminAsync(bookId);
+
+            return true;
         }
     }
 }

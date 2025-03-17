@@ -1,10 +1,9 @@
 ﻿using DigitalBookstoreManagement.Models;
 using DigitalBookstoreManagement.Repository;
-using DigitalBookstoreManagement.Service;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DigitalBookstoreManagement.Services
+namespace DigitalBookstoreManagement.Service
 {
     public class InventoryService : I_InventoryService
     {
@@ -74,6 +73,12 @@ namespace DigitalBookstoreManagement.Services
                 await _inventoryRepository.UpdateInventoryAsync(inventory);
                 await CheckStockAndNotifyAdminAsync(bookId); // Check stock after updating
             }
+        }
+
+        public async Task<bool> AddStockAsync(int bookId, int quantity)
+        {
+            var inventory = await _inventoryRepository.AddStockAsync(bookId, quantity);
+            return (inventory);
         }
     }
 }

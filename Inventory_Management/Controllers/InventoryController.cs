@@ -17,7 +17,7 @@ namespace DigitalBookstoreManagement.Controllers
 
         // ✅ 1. Get all inventory items
         [HttpGet]
-        
+
         public async Task<ActionResult<IEnumerable<Inventory>>> GetAllInventories()
         {
             var inventories = await _inventoryService.GetAllInventoriesAsync();
@@ -48,15 +48,23 @@ namespace DigitalBookstoreManagement.Controllers
 
         // ✅ 4. Add new inventory
         [HttpPost]
-        public async Task<ActionResult<Inventory>> AddInventory([FromBody] Inventory inventory)
+        public async Task<ActionResult<Inventory>> AddInventory([FromBody] InventoryDTO inventoryDto)
         {
-            if (inventory == null)
+            if (inventoryDto == null)
                 return BadRequest("Invalid inventory data.");
 
-          //  inventory.Book = null;
+            var inventory = new Inventory
+            {
+                BookID = inventoryDto.BookID,
+                Quantity = inventoryDto.Quantity,
+                NotifyLimit = inventoryDto.NotifyLimit,
+            };
+
+            //  inventory.Book = null;
 
             await _inventoryService.AddInventoryAsync(inventory);
-            return CreatedAtAction(nameof(GetInventoryById), new { id = inventory.InventoryID }, inventory);
+            //return CreatedAtAction(nameof(GetInventoryById), new { id = inventory.InventoryID }, inventory);
+            return Ok($"Inventory added successfully.");
         }
 
         // ✅ 5. Update inventory
@@ -66,10 +74,24 @@ namespace DigitalBookstoreManagement.Controllers
             if (inventory == null || id != inventory.InventoryID)
                 return BadRequest("Inventory ID mismatch or invalid data.");
 
-          //  inventory.Book = null;
+            //  inventory.Book = null;
 
             await _inventoryService.UpdateInventoryAsync(inventory);
             return Ok("Inventory Updated Successfully.");
+        }
+
+        //Add Stock in Inventory
+        [HttpPost("add-stock")]
+        public async Task<IActionResult> AddStock(int bookId, int quantity)
+        {
+            bool success = await _inventoryService.AddStockAsync(bookId, quantity);
+
+            if (!success)
+            {
+                return BadRequest("Stock update failed. Inventory item not found.");
+            }
+
+            return Ok("Stock added successfully.");
         }
 
         // ✅ 6. Delete inventory
@@ -90,7 +112,7 @@ namespace DigitalBookstoreManagement.Controllers
             bool isAvailable = await _inventoryService.IsStockAvailableAsync(bookId, orderedQuantity);
             if (!isAvailable)
                 return BadRequest("Insufficient stock!");
-                        
+
             await _inventoryService.UpdateStockOnOrderAsync(bookId, orderedQuantity);
             return Ok("Stock updated successfully!");
         }

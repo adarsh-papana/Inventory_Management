@@ -10,14 +10,14 @@ namespace DigitalBookstoreManagement.Data
         }
 
         public DbSet<Inventory> Inventories { get; set; }
-        public DbSet<Book> Books { get; set; }
+        public DbSet<BookManagement> Books { get; set; }
         public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Book>()
+            modelBuilder.Entity<BookManagement>()
                 .Property(b => b.Price)
                 .HasPrecision(18, 2);
 
