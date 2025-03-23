@@ -1,7 +1,6 @@
 using DigitalBookstoreManagement.Repository;
-using DigitalBookstoreManagement.Services;
-using DigitalBookstoreManagement.Data;
 using DigitalBookstoreManagement.Service;
+using DigitalBookstoreManagement.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
